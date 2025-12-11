@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import './App.css';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import axios from "axios";
 
 function App() {
   const [data, setData] = useState([]);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -13,21 +13,21 @@ function App() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('/api/data');
+      const response = await axios.get("/api/data");
       setData(response.data.data);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
       setLoading(false);
     }
   };
 
   const checkHealth = async () => {
     try {
-      const response = await axios.get('/api/health');
+      const response = await axios.get("/api/health");
       setMessage(`Server status: ${response.data.status}`);
     } catch (error) {
-      setMessage('Error connecting to server');
+      setMessage("Error connecting to server");
     }
   };
 
@@ -48,17 +48,25 @@ function App() {
         </section>
 
         <section className="section">
-          <h2>Data from API</h2>
+          <h2>Products</h2>
           {loading ? (
             <p>Loading...</p>
           ) : (
-            <ul className="data-list">
-              {data.map(item => (
-                <li key={item.id} className="data-item">
-                  {item.name}
-                </li>
+            <div className="products-grid">
+              {data.map((item) => (
+                <div key={item.id} className="product-card">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="product-image"
+                  />
+                  <h3 className="product-name">{item.name}</h3>
+                  <p className="product-price">
+                    {item.price.toLocaleString("vi-VN")} ₫
+                  </p>
+                </div>
               ))}
-            </ul>
+            </div>
           )}
         </section>
       </main>
